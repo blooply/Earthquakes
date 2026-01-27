@@ -13,6 +13,11 @@ import retrofit2.Response
 import retrofit2.create
 
 class EarthquakeListActivity : AppCompatActivity() {
+
+    companion object {
+        const val TAG = "EarthquakeList"
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -31,6 +36,7 @@ class EarthquakeListActivity : AppCompatActivity() {
                 response: Response<FeatureCollection?>
             ) {
                 val featureCollection = response.body()
+                Log.d(TAG, "onResponse: $featureCollection")
                 // check if the underlying array isn't null, then put it into your recyclerview adapter
                 // anything that expects you to have featureCollection data has to be here
             }
@@ -40,7 +46,7 @@ class EarthquakeListActivity : AppCompatActivity() {
                 t: Throwable
             ) {
                 // log your failure error message
-                Log.d("EarthquakeList", "onFailure: ${t.message}")
+                Log.d(TAG, "onFailure: ${t.message}")
             }
         } )
 
