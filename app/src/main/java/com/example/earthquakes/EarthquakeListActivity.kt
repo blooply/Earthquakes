@@ -7,6 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.earthquakes.databinding.ActivityEarthquakeListBinding
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -17,10 +18,13 @@ class EarthquakeListActivity : AppCompatActivity() {
         const val TAG = "EarthquakeList"
     }
 
+    private lateinit var binding: ActivityEarthquakeListBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_earthquake_list)
+        binding = ActivityEarthquakeListBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
