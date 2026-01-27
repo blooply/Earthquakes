@@ -4,8 +4,8 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class FeatureCollection (
-    val type: String,
-    val metadata: Metadata,
-    val features: List<Feature>
+data class Metadata (
+    val title: String,
+    val count: Int,
+    val status: Int
 ) : Parcelable

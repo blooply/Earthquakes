@@ -4,8 +4,6 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class FeatureCollection (
-    val type: String,
-    val metadata: Metadata,
-    val features: List<Feature>
+data class Geometry (
+    val coordinates: List<Double>
 ) : Parcelable
