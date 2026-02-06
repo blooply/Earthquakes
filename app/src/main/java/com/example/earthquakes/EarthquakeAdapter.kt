@@ -1,4 +1,4 @@
-package com.example.earthquake
+package com.example.earthquakes
 
 
 import android.content.Intent
@@ -24,9 +24,9 @@ class EarthquakeAdapter(var eqList: List<Feature>) :
         val layout: ConstraintLayout
 
         init {
-            tvMag = view.findViewById(R.id.textView_eqItem_magnitude)
-            tvLocation = view.findViewById(R.id.textView_eqItem_location)
-            tvTime = view.findViewById(R.id.textView_eqItem_time)
+            tvMag = view.findViewById(R.id.textView_earthquakeItem_magnitude)
+            tvLocation = view.findViewById(R.id.textView_earthquakeItem_location)
+            tvTime = view.findViewById(R.id.textView_earthquakeItem_time)
             layout = view.findViewById(R.id.layout_earthquakeItem)
         }
     }
@@ -58,19 +58,19 @@ class EarthquakeAdapter(var eqList: List<Feature>) :
 
         when {
             mag > 6.5 -> {
-                holder.tvMag.setTextColor(context.getColor(R.color.significant))
-                holder.tvMag.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.error_significant,0,0,0)
+                holder.tvMag.setTextColor(context.getColor(R.color.purple))
+                holder.tvMag.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.error_purple,0,0,0)
             }
             mag >= 4.6 -> {
-                holder.tvMag.setTextColor(context.getColor(R.color.large))
-                holder.tvMag.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.error_large,0,0,0)
+                holder.tvMag.setTextColor(context.getColor(R.color.red))
+                holder.tvMag.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.error_red,0,0,0)
             }
             mag >= 2.5 -> {
-                holder.tvMag.setTextColor(context.getColor(R.color.moderate))
+                holder.tvMag.setTextColor(context.getColor(R.color.orange))
                 holder.tvMag.setCompoundDrawablesRelativeWithIntrinsicBounds(0,0,0,0)
             }
             else -> {
-                holder.tvMag.setTextColor(context.getColor(R.color.small))
+                holder.tvMag.setTextColor(context.getColor(R.color.blue))
             }
         }
 

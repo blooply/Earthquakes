@@ -1,4 +1,4 @@
-package com.example.earthquake
+package com.example.earthquakes
 
 import android.os.Bundle
 import android.util.Log
@@ -10,7 +10,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.example.earthquake.databinding.ActivityEarthquakeListBinding
+import com.example.earthquakes.databinding.ActivityEarthquakeListBinding
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

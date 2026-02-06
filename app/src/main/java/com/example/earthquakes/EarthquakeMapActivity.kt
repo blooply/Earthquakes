@@ -1,4 +1,4 @@
-package com.example.earthquake
+package com.example.earthquakes
 
 
 import android.os.Bundle
@@ -14,7 +14,6 @@ import java.text.DecimalFormat
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
-import java.util.Date
 
 
 class EarthquakeMapActivity : AppCompatActivity() {
@@ -45,7 +44,7 @@ class EarthquakeMapActivity : AppCompatActivity() {
 
         val tvTitle = findViewById<TextView>(R.id.textView_earthquake_title)
         val tvInfo = findViewById<TextView>(R.id.textView_earthquake_info)
-        val tvLink = findViewById<TextView>(R.id.textView_earthquake_link)
+        val tvLink = findViewById<TextView>(R.id.textView_earthquake_url)
 
         val mag = DecimalFormat("#.#").format(earthquake.properties.mag)
 
@@ -57,9 +56,7 @@ class EarthquakeMapActivity : AppCompatActivity() {
 
         tvInfo.text = "Magnitude $mag - ${earthquake.properties.place}\n${date}"
 
-        tvLink.text = "Open on USGS"
-        tvLink.setOnClickListener {
-        }
+        tvLink.text = "${earthquake.properties.url}"
 
         map = findViewById(R.id.map)
         map.setTileSource(TileSourceFactory.MAPNIK)
