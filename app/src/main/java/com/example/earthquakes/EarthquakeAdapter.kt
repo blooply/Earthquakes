@@ -1,6 +1,5 @@
 package com.example.earthquakes
 
-
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
@@ -12,7 +11,7 @@ import java.text.DecimalFormat
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
-import java.util.Date
+
 
 class EarthquakeAdapter(var eqList: List<Feature>) :
     RecyclerView.Adapter<EarthquakeAdapter.ViewHolder>() {
@@ -51,7 +50,6 @@ class EarthquakeAdapter(var eqList: List<Feature>) :
 
         val instant = Instant.ofEpochMilli(earthquake.properties.time)
         val formatter = DateTimeFormatter.ofPattern("MMMM d, yyyy h:mm a").withZone(ZoneId.systemDefault())
-        //holder.tvTime.text = Date(earthquake.properties.time).toString()
         holder.tvTime.text = formatter.format(instant)
 
         val context = holder.layout.context
@@ -71,6 +69,7 @@ class EarthquakeAdapter(var eqList: List<Feature>) :
             }
             else -> {
                 holder.tvMag.setTextColor(context.getColor(R.color.blue))
+                holder.tvMag.setCompoundDrawablesRelativeWithIntrinsicBounds(0,0,0,0)
             }
         }
 

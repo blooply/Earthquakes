@@ -1,11 +1,12 @@
 package com.example.earthquakes
 
-
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.ViewCompat
+import org.osmdroid.config.Configuration.*
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
@@ -17,16 +18,17 @@ import java.time.format.DateTimeFormatter
 
 
 class EarthquakeMapActivity : AppCompatActivity() {
+    private lateinit var map : MapView
 
     companion object {
         const val EXTRA_EARTHQUAKE = "earthquake"
     }
 
-    private lateinit var map : MapView
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        getInstance().load(this, PreferenceManager.getDefaultSharedPreferences(this))
 
         setContentView(R.layout.activity_earthquake_map)
 
@@ -44,7 +46,7 @@ class EarthquakeMapActivity : AppCompatActivity() {
 
         val tvTitle = findViewById<TextView>(R.id.textView_earthquake_title)
         val tvInfo = findViewById<TextView>(R.id.textView_earthquake_info)
-        val tvLink = findViewById<TextView>(R.id.textView_earthquake_url)
+        val tvUrl = findViewById<TextView>(R.id.textView_earthquake_url)
 
         val mag = DecimalFormat("#.#").format(earthquake.properties.mag)
 
@@ -52,18 +54,18 @@ class EarthquakeMapActivity : AppCompatActivity() {
         val formatter = DateTimeFormatter.ofPattern("MMMM d, yyyy h:mm a").withZone(ZoneId.systemDefault())
         val date = formatter.format(instant)
 
-        tvTitle.text = "oh my god, it is an earthquake."
+        tvTitle.text = "Details"
 
-        tvInfo.text = "Magnitude $mag - ${earthquake.properties.place}\n${date}"
+        tvInfo.text = "Magnitude $mag  -  ${earthquake.properties.place}\n${date}"
 
-        tvLink.text = "${earthquake.properties.url}"
+        tvUrl.text = "${earthquake.properties.url}"
 
         map = findViewById(R.id.map)
         map.setTileSource(TileSourceFactory.MAPNIK)
 
         val point = GeoPoint(earthquake.geometry.coordinates[1], earthquake.geometry.coordinates[0])
 
-        map.controller.setZoom(5.0)
+        map.controller.setZoom(7.0)
         map.controller.setCenter(point)
 
         val marker = Marker(map)
@@ -87,6 +89,4 @@ class EarthquakeMapActivity : AppCompatActivity() {
         super.onPause()
         map.onPause()
     }
-
-
 }

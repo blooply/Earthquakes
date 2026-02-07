@@ -1,6 +1,9 @@
 package com.example.earthquakes
 
 import android.os.Bundle
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
 import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
@@ -10,11 +13,11 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.example.earthquakes.databinding.ActivityEarthquakeListBinding
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.earthquakes.databinding.ActivityEarthquakeListBinding
 
 
 class EarthquakeListActivity : AppCompatActivity() {
@@ -45,13 +48,6 @@ class EarthquakeListActivity : AppCompatActivity() {
                 call: Call<FeatureCollection?>,
                 response: Response<FeatureCollection?>
             ) {
-                //
-                //val featureCollection = response.body()
-
-                //Log.d("EarthquakeList", "Count: ${featureCollection?.metadata?.count}")
-                //Log.d("EarthquakeList", "First Quake: ${featureCollection?.features?.get(0)?.properties?.title}")
-
-
                 val data = response.body()?.features ?: return
 
                 filteredData = data.filter { (it.properties.mag ?: 0.0) >= 1.0}
@@ -60,16 +56,9 @@ class EarthquakeListActivity : AppCompatActivity() {
 
                 binding.recyclerViewEarthquakeList.adapter = adapter
                 binding.recyclerViewEarthquakeList.layoutManager = LinearLayoutManager(this@EarthquakeListActivity)
-
-
-                // check if the underlying array isn't null, and if it isn't,
-                // put it into your recyclerView adapter
-                // anything that expects you to have featureCollection data has to be here
             }
 
-            override fun onFailure(
-                call: Call<FeatureCollection?>,
-                t: Throwable
+            override fun onFailure(call: Call<FeatureCollection?>, t: Throwable
             ) {
                 Log.d("EarthquakeList", "onFailure: ${t.message}")
             }
@@ -83,18 +72,49 @@ class EarthquakeListActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle item selection.
-
         when (item.itemId) {
+
             R.id.item_listOptions_sortRecent -> {
-                binding.recyclerViewEarthquakeList.adapter = EarthquakeAdapter(filteredData.sortedByDescending { it.properties.time })
+                binding.recyclerViewEarthquakeList.adapter =
+                    EarthquakeAdapter(filteredData.sortedByDescending { it.properties.time })
             }
+
             R.id.item_listOptions_sortMag -> {
-                binding.recyclerViewEarthquakeList.adapter = EarthquakeAdapter(filteredData.sortedWith(compareByDescending<Feature> {it.properties.mag ?: 0.0}.thenByDescending {it.properties.time}))
+                binding.recyclerViewEarthquakeList.adapter =
+                    EarthquakeAdapter(filteredData.sortedWith(compareByDescending<Feature> {
+                        it.properties.mag ?: 0.0
+                    }.thenByDescending { it.properties.time }))
             }
+
             R.id.item_listOptions_help -> {
-                AlertDialog.Builder(this).setMessage("Purple: Significant (> 6.5)\nRed: Large (4.5 - 6.5)\nOrange: Moderate (2.5 - 4.5)\nBlue: Small (1.0 - 2.5)\n\nThe number represents the magnitude.").setPositiveButton("OK", null).show()
+                val text =
+                    "Magnitude Colors:\n\n" +
+                    "≥6.5 — Purple\n" +
+                    "4.5–6.5 — Red\n" +
+                    "2.5–4.5 — Orange\n" +
+                    "1.0–2.5 — Blue"
+
+                val spannable = SpannableString(text)
+
+                fun colorWord(word: String, colorRes: Int) {
+                    val start = text.indexOf(word)
+                    val end = start + word.length
+                    spannable.setSpan(
+                        ForegroundColorSpan(getColor(colorRes)),
+                        start,
+                        end,
+                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                    )
+                }
+
+                colorWord("Purple", R.color.purple)
+                colorWord("Red", R.color.red)
+                colorWord("Orange", R.color.orange)
+                colorWord("Blue", R.color.blue)
+
+                AlertDialog.Builder(this).setMessage(spannable).setPositiveButton("OK", null).show()
             }
+
             else -> super.onOptionsItemSelected(item)
         }
         return true
