@@ -60,7 +60,7 @@ class EarthquakeListActivity : AppCompatActivity() {
 
             override fun onFailure(call: Call<FeatureCollection?>, t: Throwable
             ) {
-                Log.d("EarthquakeList", "onFailure: ${t.message}")
+                Log.d(TAG, "onFailure: ${t.message}")
             }
         })
     }
